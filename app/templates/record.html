@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<div class="card">
+  <div class="card-header"><strong>
+    	{{ student_record.first_name }} 
+		{{ student_record.last_name }}</strong>
+  </div>
+  <div class="card-body">
+
+
+
+<p class="card-text">
+<strong>Email: </strong>{{ student_record.school_name }}</p>
+
+<p class="card-text">
+<strong>Gender: </strong>{{ student_record.gender }}
+</p>
+
+<p class="card-text">
+<strong>Class: </strong>{{ student_record.standard }}</p>
+
+<p class="card-text">
+<strong>Section : </strong>{{ student_record.section }}</p>
+
+<p class="card-text">
+<strong>City: </strong>{{ student_record.city }}</p>
+
+<p class="card-text">
+<strong>State: </strong>{{ student_record.state }}</p>
+
+
+
+    
+    
+  </div>
+</div>
+
+<br/><br/>
+
+<a href="{% url 'front' %}" class="btn btn-secondary">Back</a>
+
+<a href="{% url 'delete_record' student_record.id %}" class="btn btn-danger">Delete</a>
+
+<a href="{% url 'update_record' student_record.id %}" class="btn btn-secondary">Update</a>
+
+
+
+
+
+		
+
+{% endblock %}

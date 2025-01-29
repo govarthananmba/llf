@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Form</title>
+    <style>
+        /* Define button colors */
+        .btn-green {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: not-allowed;
+        }
+
+        .btn-red {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+        }
+
+        .btn-red:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <h1>Form for Standard {{ student.standard }}</h1>
+
+    {% if form_submitted %}
+        <p>You have already submitted this form. Thank you!</p>
+        <button class="btn-green" disabled>Submitted</button>
+    {% else %}
+        <form method="post" action="{% url 'submit_form' student.id %}">
+            {% csrf_token %}
+            {% for question in questions %}
+                <div>
+                    <p>{{ question.question }}</p>
+                    <input type="radio" name="question_{{ question.question }}" value="{{ question.options.0 }}" required> {{ question.options.0 }}<br>
+                    <input type="radio" name="question_{{ question.question }}" value="{{ question.options.1 }}"> {{ question.options.1 }}<br>
+                    <input type="radio" name="question_{{ question.question }}" value="{{ question.options.2 }}"> {{ question.options.2 }}<br>
+                    <input type="radio" name="question_{{ question.question }}" value="{{ question.options.3 }}"> {{ question.options.3 }}<br>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn-red">Submit</button>
+        </form>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="col-md-6 offset-md-3">
+<h1>Add Record</h1>
+<br/>
+
+<form method="POST">
+	{% csrf_token %}
+	
+	<div class="form-row">
+		<!-- First column with 6 fields -->
+		<div class="col-md-6">
+			<div class="form-group">
+				{{ form.student_id.label_tag }} {{ form.student_id }}
+			</div>
+			<div class="form-group">
+				{{ form.first_name.label_tag }} {{ form.first_name }}
+			</div>
+			<div class="form-group">
+				{{ form.last_name.label_tag }} {{ form.last_name }}
+			</div>
+			<div class="form-group">
+				{{ form.funder.label_tag }} {{ form.funder }}
+			</div>
+			<div class="form-group">
+				{{ form.school_name.label_tag }} {{ form.school_name }}
+			</div>
+			<div class="form-group">
+				{{ form.email.label_tag }} {{ form.email }}
+			</div>
+		</div>
+		<!-- Second column with remaining fields -->
+		<div class="col-md-6">
+			<div class="form-group">
+				{{ form.gender.label_tag }} {{ form.gender }}
+			</div>
+			<div class="form-group">
+				{{ form.standard.label_tag }} {{ form.standard }}
+			</div>
+			<div class="form-group">
+				{{ form.section.label_tag }} {{ form.section }}
+			</div>
+			<div class="form-group">
+				{{ form.phone.label_tag }} {{ form.phone }}
+			</div>
+			<div class="form-group">
+				{{ form.block.label_tag }} {{ form.block }}
+			</div>
+			<div class="form-group">
+				{{ form.city.label_tag }} {{ form.city }}
+			</div>
+			<div class="form-group">
+				{{ form.state.label_tag }} {{ form.state }}
+			</div>
+			<div class="form-group">
+				{{ form.zipcode.label_tag }} {{ form.zipcode }}
+			</div>
+		</div>
+	</div>
+
+
+<br/>
+
+  <button type="submit" class="btn btn-secondary">Update Record</button>
+  
+  <button type="submit" class="btn btn-secondary" href="{% url 'home' %}">Back</button>
+
+
+</form>
+
+
+</div>
+
+{% endblock %}
+
+
+
+
+

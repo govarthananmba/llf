@@ -1,0 +1,261 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+<body>
+
+    
+
+    {% if user.is_authenticated %}       
+    <h4>  Overall Student List</h4>
+        <br>
+        
+        <form method="GET" action="{% url 'front' %}" class="row g-2 align-items-center">
+            <div class="col-md-2">
+                <select class="form-control select2" id="state" name="state">
+                    <option value="">Select by State</option>
+                    {% for state in states %}
+                        <option value="{{ state }}" {% if filters.state == state %}selected{% endif %}>{{ state }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control select2" id="city" name="city">
+                    <option value="">Select by City</option>
+                    {% for city in cities %}
+                        <option value="{{ city }}" {% if filters.city == city %}selected{% endif %}>{{ city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input
+                    type="text"
+                    class="form-control"
+                    id="school"
+                    name="school"
+                    placeholder="Search by School"
+                    value="{{ filters.school }}"
+                />
+            </div>
+            <div class="col-md-2">
+                <input 
+                    type="text"
+                    class="form-control"
+                    id="grade"
+                    name="grade"
+                    placeholder="Search by Grade"
+                    value="{{ filters.grade }}"
+                />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+        
+        
+        <br>
+        <div class="d-flex flex-row-reverse bd-highlight gap-2">
+            <!-- Download Button -->
+            <form method="get" action="{% url 'export_csv' %}" class="d-inline">
+                <!-- Hidden fields to pass filter parameters -->
+                <input type="hidden" name="state" value="{{ request.GET.state }}">
+                <input type="hidden" name="city" value="{{ request.GET.city }}">
+                <input type="hidden" name="school" value="{{ request.GET.school }}">
+                <input type="hidden" name="grade" value="{{ request.GET.grade }}">
+                <button type="submit" class="btn btn-success p-2 bd-highlight" data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-download me-1" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                    </svg>
+                    
+                </button>
+            </form>
+        
+
+        </div>     
+   
+        <br>
+ 
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">School Name</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">City</th>
+                    <th scope="col">State</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% if page_obj %}
+                    {% for record in page_obj %}
+                        <tr>
+                            <td>{{ record.first_name }} {{ record.last_name }}</td>
+                            <td>{{ record.school_name }}</td>
+                            <td>{{ record.gender }}</td>
+                            <td>{{ record.standard }}</td>
+                            <td>{{ record.section }}</td>
+                            <td>{{ record.city }}</td>
+                            <td>{{ record.state }}</td>
+                            <!--<td>
+                                <a class="btn btn-sm btn-primary" href="{% url 'update_record' record.id %}"><strong>Update</strong></a>
+                                <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ record.id }}"><strong>Delete</strong></a>
+                                
+                                <div class="modal fade" id="deleteModal{{ record.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete this record permanently?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <a href="{% url 'delete_record' record.id %}" class="btn btn-danger">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             </td>   -->
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+
+        <div class="pagination">
+
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1{% for key, value in filters.items %}&{{ key }}={{ value }}{% endfor %}">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% for key, value in filters.items %}&{{ key }}={{ value }}{% endfor %}">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% for key, value in filters.items %}&{{ key }}={{ value }}{% endfor %}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% for key, value in filters.items %}&{{ key }}={{ value }}{% endfor %}">last &raquo;</a>
+                {% endif %}
+            </span>
+ 
+            
+        </div>
+    {% else %}
+        <div class="col-md-6 offset-md-3">
+            <h1>Login</h1>
+            <br/>
+            <form method="POST" action="{% url 'front' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required>
+                </div>
+                <br/>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-secondary">Login</button>
+            </form>
+        </div>
+    {% endif %}
+</body>
+
+<!-- Include jQuery and jQuery UI for autocomplete -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script>
+$(function() {
+    function autocompleteInput(inputId, filterType) {
+        $("#" + inputId).autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "{% url 'get_suggestions' %}",
+                    dataType: "json",
+                    data: {
+                        term: request.term,
+                        type: filterType
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 2,
+        });
+    }
+
+    autocompleteInput("state", "state");
+    autocompleteInput("city", "city");
+    autocompleteInput("school", "school");
+    autocompleteInput("grade", "grade");
+});
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize Select2 for states
+        $("#state").select2({
+            placeholder: "Select a State",
+            allowClear: true,
+            ajax: {
+                url: "{% url 'get_states' %}",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: data.map(function (item) {
+                            return { id: item, text: item };
+                        }),
+                    };
+                },
+            },
+        });
+
+        // Initialize Select2 for cities with dependent dropdown
+        $("#city").select2({
+            placeholder: "Select a City",
+            allowClear: true,
+            ajax: {
+                url: "{% url 'get_cities' %}",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        state: $("#state").val(), // Pass selected state as parameter
+                        term: params.term, // Search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(function (item) {
+                            return { id: item, text: item };
+                        }),
+                    };
+                },
+            },
+        });
+    });
+</script>
+
+
+{% endblock %}
+
+
+
+

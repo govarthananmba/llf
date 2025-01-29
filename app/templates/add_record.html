@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="col-md-8 offset-md-2">
+    <h1>Add Record</h1>
+
+    <form method="POST" class="mt-1" action="{% url 'add_record' %}">
+        {% csrf_token %}
+        <div class="form-row">
+            <!-- First row -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.student_id.label_tag }} {{ form.student_id }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.first_name.label_tag }} {{ form.first_name }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.last_name.label_tag }} {{ form.last_name }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <!-- Second row -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.funder.label_tag }} {{ form.funder }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.school_name.label_tag }} {{ form.school_name }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.email.label_tag }} {{ form.email }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <!-- Third row -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.gender.label_tag }} {{ form.gender }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.standard.label_tag }} {{ form.standard }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.section.label_tag }} {{ form.section }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <!-- Fourth row -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.phone.label_tag }} {{ form.phone }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.block.label_tag }} {{ form.block }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.city.label_tag }} {{ form.city }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <!-- Fifth row -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.state.label_tag }} {{ form.state }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.zipcode.label_tag }} {{ form.zipcode }}
+                </div>
+            </div>
+        </div>
+
+        <br/>
+        <button type="submit" class="btn btn-secondary">Add New Student</button>
+        <a href="{% url 'front' %}" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+

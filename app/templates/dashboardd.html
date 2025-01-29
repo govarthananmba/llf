@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Assessment Dashboard</title>
+    <!-- Include Plotly for charts -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Dashboard Title -->
+        <h1 class="mb-4 text-center">Student Assessment Dashboard</h1>
+
+        <!-- Filters Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Filters</h4>
+            </div>
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <!-- Funder Filter -->
+                    <div class="col-md-3">
+                        <label for="funder" class="form-label">Funder</label>
+                        <select name="funder" id="funder" class="form-select">
+                            <option value="">All</option>
+                            {% for funder in funders %}
+                                <option value="{{ funder }}" {% if selected_funder == funder %}selected{% endif %}>
+                                    {{ funder }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- District Filter -->
+                    <div class="col-md-3">
+                        <label for="district" class="form-label">District</label>
+                        <select name="district" id="district" class="form-select">
+                            <option value="">All</option>
+                            {% for district in districts %}
+                                <option value="{{ district }}" {% if selected_district == district %}selected{% endif %}>
+                                    {{ district }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- School Filter -->
+                    <div class="col-md-3">
+                        <label for="school" class="form-label">School</label>
+                        <select name="school" id="school" class="form-select">
+                            <option value="">All</option>
+                            {% for school in schools %}
+                                <option value="{{ school }}" {% if selected_school == school %}selected{% endif %}>
+                                    {{ school }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Assessment Status Filter -->
+                    <div class="col-md-3">
+                        <label for="assessment_status" class="form-label">Assessment Status</label>
+                        <select name="assessment_status" id="assessment_status" class="form-select">
+                            <option value="">All</option>
+                            <option value="filled" {% if selected_status == "filled" %}selected{% endif %}>Forms Filled</option>
+                            <option value="not_filled" {% if selected_status == "not_filled" %}selected{% endif %}>Forms Not Filled</option>
+                        </select>
+                    </div>
+
+                    <!-- Apply Filters Button -->
+                    <div class="col-md-3">
+                        <label class="form-label d-block">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="row text-center mb-4">
+            <!-- Total Schools Assessed -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Schools Assessed</h5>
+                        <p class="display-4">{{ school_assessed }}</p>
+                        <p class="text-success">Out of {{ total_schools }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Students Assessed -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Students Assessed</h5>
+                        <p class="display-4">{{ students_assessed }}</p>
+                        <p class="text-success">Out of {{ total_students }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row">
+            <!-- Assessments by Funder Chart -->
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Assessments by Funder</h5>
+                        <div id="funderChart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assessments by District Chart -->
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Assessments by District</h5>
+                        <div id="districtChart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assessments by Grade Chart -->
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Assessments by Grade</h5>
+                        <div id="gradeChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plotly Charts Script -->
+    <script>
+        // Funder Chart
+        const funderData = {{ funder_chart.data | safe }};
+        const funderLayout = {{ funder_chart.layout | safe }};
+        Plotly.newPlot("funderChart", funderData, funderLayout);
+
+        // District Chart
+        const districtData = {{ district_chart.data | safe }};
+        const districtLayout = {{ district_chart.layout | safe }};
+        Plotly.newPlot("districtChart", districtData, districtLayout);
+
+        // Grade Chart
+        const gradeData = {{ grade_chart.data | safe }};
+        const gradeLayout = {{ grade_chart.layout | safe }};
+        Plotly.newPlot("gradeChart", gradeData, gradeLayout);
+    </script>
+</body>
+</html>
+{% endblock %}
