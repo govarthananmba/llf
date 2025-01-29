@@ -3,13 +3,35 @@
 <head>
     <title>Student Form</title>
     <style>
-        /* Define button colors */
+        body {
+            background-color: #ADD8E6; /* Light blue background */
+            font-family: 'Arial', sans-serif; /* Change font style */
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+
         .btn-green {
             background-color: green;
             color: white;
             border: none;
             padding: 10px 20px;
             cursor: not-allowed;
+            display: block;
+            margin: auto;
         }
 
         .btn-red {
@@ -17,33 +39,44 @@
             color: white;
             border: none;
             padding: 10px 20px;
+            display: block;
+            margin: auto;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
         .btn-red:hover {
             background-color: darkred;
         }
+
+        .question-container {
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
-    <h1>Form for Standard {{ student.standard }}</h1>
+    <div class="form-container">
+        <h1>Form for Standard {{ student.standard }}</h1>
 
-    {% if form_submitted %}
-        <p>You have already submitted this form. Thank you!</p>
-        <button class="btn-green" disabled>Submitted</button>
-    {% else %}
-        <form method="post" action="{% url 'submit_form' student.id %}">
-            {% csrf_token %}
-            {% for question in questions %}
-                <div>
-                    <p>{{ question.question }}</p>
-                    <input type="radio" name="question_{{ question.question }}" value="{{ question.options.0 }}" required> {{ question.options.0 }}<br>
-                    <input type="radio" name="question_{{ question.question }}" value="{{ question.options.1 }}"> {{ question.options.1 }}<br>
-                    <input type="radio" name="question_{{ question.question }}" value="{{ question.options.2 }}"> {{ question.options.2 }}<br>
-                    <input type="radio" name="question_{{ question.question }}" value="{{ question.options.3 }}"> {{ question.options.3 }}<br>
-                </div>
-            {% endfor %}
-            <button type="submit" class="btn-red">Submit</button>
-        </form>
-    {% endif %}
+        {% if form_submitted %}
+            <p>You have already submitted this form. Thank you!</p>
+            <button class="btn-green" disabled>Submitted</button>
+            <button type="submit" class="btn btn-secondary" href="{% url 'dashboardd' %}">Back</button>
+        {% else %}
+            <form method="post" action="{% url 'submit_form' student.id %}">
+                {% csrf_token %}
+                {% for question in questions %}
+                    <div class="question-container">
+                        <p>{{ question.question }}</p>
+                        <label><input type="radio" name="question_{{ question.question }}" value="{{ question.options.0 }}" required> {{ question.options.0 }}</label><br>
+                        <label><input type="radio" name="question_{{ question.question }}" value="{{ question.options.1 }}"> {{ question.options.1 }}</label><br>
+                        <label><input type="radio" name="question_{{ question.question }}" value="{{ question.options.2 }}"> {{ question.options.2 }}</label><br>
+                        <label><input type="radio" name="question_{{ question.question }}" value="{{ question.options.3 }}"> {{ question.options.3 }}</label><br>
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn-red">Submit</button>
+            </form>
+        {% endif %}
+    </div>
 </body>
 </html>

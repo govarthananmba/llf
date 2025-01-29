@@ -11,6 +11,10 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+def	home(request):
+
+	return render(request,"index/home.html")
+
 
 def	frontpage(request):
 
@@ -93,7 +97,7 @@ def logout_user(request):
      
 	logout(request)
 	messages.success(request, "You Have Been Logged Out...")
-	return redirect('register')
+	return redirect('home')
 
 
 def register_user(request):
@@ -339,7 +343,10 @@ def submit_form(request, student_id):
             submitted_at=timezone.now(),
         )
 
-        return HttpResponse('Form submitted Successfully')  
+        print("Form submitted Successfully")
+        return redirect('student-list')
+    
+      
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 from django.db.models import Count
