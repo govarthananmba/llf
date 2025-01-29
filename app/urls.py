@@ -3,7 +3,7 @@ from.import views
 
 urlpatterns = [
 
-    path('',views.home, name="home"),
+
     path('front/',views.front, name="front"),
     path('frontpage/', views.frontpage, name= "frontpage"), 
     path('get_suggestions/', views.get_suggestions, name='get_suggestions'),

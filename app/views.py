@@ -11,9 +11,6 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-def	home(request):
-
-	return render(request,"index/home.html")
 
 def	frontpage(request):
 
@@ -96,7 +93,7 @@ def logout_user(request):
      
 	logout(request)
 	messages.success(request, "You Have Been Logged Out...")
-	return redirect('home')
+	return redirect('register')
 
 
 def register_user(request):
